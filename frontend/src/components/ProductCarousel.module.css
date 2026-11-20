@@ -1,0 +1,60 @@
+/* Misma idea de bordes compartidos que ProductGrid, pero en una sola fila
+   que se desplaza. Se ven 2 fichas en mobile, 3 desde 960px y 4 desde 1200px. */
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 50%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* se navega con las flechas o con el dedo */
+  border-top: var(--hairline);
+  border-left: var(--hairline);
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  min-width: 0;
+  scroll-snap-align: start;
+  border-right: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+  color: var(--ink);
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.arrow:hover {
+  border-color: var(--ink);
+  color: var(--accent);
+}
+
+@media (min-width: 960px) {
+  .track {
+    grid-auto-columns: calc(100% / 3);
+  }
+}
+
+@media (min-width: 1200px) {
+  .track {
+    grid-auto-columns: 25%;
+  }
+}

@@ -1,0 +1,36 @@
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-4);
+}
+
+.square {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--accent);
+  animation: rotate 1s linear infinite;
+}
+
+.text {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Si el usuario pidió menos movimiento, el cuadrado queda quieto */
+@media (prefers-reduced-motion: reduce) {
+  .square {
+    animation: none;
+    background: var(--accent);
+  }
+}

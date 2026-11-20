@@ -1,0 +1,226 @@
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--ink);
+}
+
+.title {
+  font-size: var(--fs-28);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 640px;
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+  color: var(--ink-2);
+}
+
+.search:focus-within {
+  border-color: var(--accent);
+  /* Foco visible en el contenedor: reemplaza al outline del input */
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  min-height: 36px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.searchInput:focus-visible {
+  outline: none; /* el foco se muestra en .search:focus-within */
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+/* ---------- Filtros ---------- */
+.sidebar {
+  display: none;
+}
+
+.sidebarOpen {
+  display: block;
+}
+
+.filters {
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  min-width: 0;
+}
+
+.group + .group {
+  border-top: var(--hairline);
+}
+
+.select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+  font-size: var(--fs-14);
+  transition: border-color var(--transition);
+}
+
+.select:hover {
+  border-color: var(--ink-2);
+}
+
+input.select {
+  font-family: var(--font-mono);
+}
+
+.priceGroup {
+  gap: var(--space-3);
+}
+
+.priceField {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+/* ---------- Resultados ---------- */
+.results {
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.filtersButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: var(--radius);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-14);
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.sortSelect {
+  min-height: 36px;
+  padding: 0 var(--space-2);
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+  font-size: var(--fs-14);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  background: var(--ink);
+  color: var(--surface);
+  border: 0;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+}
+
+.chip:hover {
+  background: var(--ink-hover);
+}
+
+.clear {
+  padding: 0 var(--space-2);
+  background: transparent;
+  border: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.clear:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .sidebar {
+    display: block;
+  }
+
+  .filtersButton {
+    display: none;
+  }
+}

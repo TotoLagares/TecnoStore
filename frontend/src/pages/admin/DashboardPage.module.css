@@ -1,0 +1,115 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Fichas con bordes compartidos */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: var(--hairline);
+  border-left: var(--hairline);
+}
+
+.stat {
+  border-right: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+.statLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-4);
+  background: var(--surface);
+  color: var(--ink);
+  transition: background-color var(--transition);
+}
+
+.statLink:hover {
+  text-decoration: none;
+  background: var(--surface-hover);
+}
+
+.statValue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-40);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 2.5rem;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-14);
+}
+
+.barName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barTrack {
+  height: 12px;
+  background: var(--paper);
+  border: var(--hairline);
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+
+.barValue {
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.more {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .stats {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .columns {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  }
+}

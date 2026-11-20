@@ -1,0 +1,297 @@
+# Colección de requests de TecnoStore (extensión "REST Client" de VS Code).
+# Uso: correr `npm run seed` y `npm run dev` en backend/, y después hacer clic
+# en "Send Request" arriba de cada bloque, en orden. El login guarda el token
+# en una variable y los requests siguientes lo reutilizan.
+# Contrato completo: specs/03-api-contract.md
+
+@baseUrl = http://localhost:4000
+@api = {{baseUrl}}/api
+@token = {{login.response.body.data.token}}
+
+### Salud
+GET {{baseUrl}}/health
+
+# =====================================================================
+# AUTH
+# =====================================================================
+
+### Login (guarda el token en @token)
+# @name login
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@tecnostore.com",
+  "password": "Admin123"
+}
+
+### Login con credenciales incorrectas -> 401
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@tecnostore.com",
+  "password": "incorrecta1"
+}
+
+### Registrar un admin nuevo -> 201 (409 si el email ya existe)
+POST {{api}}/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "María",
+  "lastName": "López",
+  "email": "maria.lopez@example.com",
+  "phone": "+54 11 5555-1234",
+  "password": "Clave1234"
+}
+
+### Registro inválido -> 400 con errors[]
+POST {{api}}/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "M",
+  "lastName": "",
+  "email": "no-es-un-email",
+  "phone": "abc",
+  "password": "corta"
+}
+
+### Mis datos 🔒
+GET {{api}}/auth/me
+Authorization: Bearer {{token}}
+
+### Sin token -> 401
+GET {{api}}/auth/me
+
+### Actualizar mis datos 🔒
+PUT {{api}}/auth/me
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "Admin",
+  "lastName": "TecnoStore",
+  "phone": "011-4000-0000"
+}
+
+### Cambiar la contraseña 🔒 (currentPassword es obligatorio)
+PUT {{api}}/auth/me
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "Admin123",
+  "newPassword": "Admin123"
+}
+
+### Recuperar contraseña: siempre responde lo mismo; si el email existe se
+### envía el mail con el link (ver la consola del server si se usa Ethereal)
+POST {{api}}/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "admin@tecnostore.com"
+}
+
+### Restablecer contraseña (pegar el token que llegó en el link del mail)
+POST {{api}}/auth/reset-password
+Content-Type: application/json
+
+{
+  "token": "PEGAR_ACA_EL_TOKEN_DEL_MAIL",
+  "newPassword": "Admin123"
+}
+
+# =====================================================================
+# CATEGORÍAS
+# =====================================================================
+
+### Categorías activas (público), con productCount
+# @name categories
+GET {{api}}/categories
+
+### Todas las categorías 🔒
+GET {{api}}/categories?all=true
+Authorization: Bearer {{token}}
+
+### Detalle de una categoría (la primera del listado)
+GET {{api}}/categories/{{categories.response.body.$.data[0]._id}}
+
+### Crear categoría 🔒
+# @name createCategory
+POST {{api}}/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Drones",
+  "description": "Drones y accesorios para fotografía aérea.",
+  "isActive": true
+}
+
+### Nombre duplicado (sin distinguir mayúsculas) -> 409
+POST {{api}}/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "notebooks"
+}
+
+### Editar categoría 🔒
+PUT {{api}}/categories/{{createCategory.response.body.data._id}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "description": "Drones, repuestos y accesorios.",
+  "isActive": false
+}
+
+# =====================================================================
+# PRODUCTOS / PUBLICACIONES
+# =====================================================================
+
+### Listado público (paginado)
+GET {{api}}/products
+
+### Búsqueda + filtros + orden
+GET {{api}}/products?search=note&availability=disponible&minPrice=500000&maxPrice=2000000&sort=price_asc&page=1&limit=12
+
+### Destacados
+GET {{api}}/products?featured=true
+
+### Por categoría
+GET {{api}}/products?category={{categories.response.body.$.data[0]._id}}
+
+### Query param inválido -> 400
+GET {{api}}/products?sort=xyz&limit=0
+
+### Listado de administración 🔒 (incluye despublicadas)
+GET {{api}}/products/admin?isActive=false
+Authorization: Bearer {{token}}
+
+### Crear publicación 🔒 (en la categoría creada arriba)
+# @name createProduct
+POST {{api}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Drone DJI Mini 3",
+  "category": "{{createCategory.response.body.data._id}}",
+  "description": "Drone compacto de menos de 250 g, cámara 4K HDR y 38 minutos de vuelo.",
+  "images": [
+    "https://images.unsplash.com/photo-1506947411487-a56738267384?w=800&q=80"
+  ],
+  "price": 890000,
+  "availability": "disponible",
+  "featured": false,
+  "isActive": true
+}
+
+### Detalle de una publicación
+GET {{api}}/products/{{createProduct.response.body.data._id}}
+
+### Id con formato inválido -> 400
+GET {{api}}/products/123
+
+### Editar publicación 🔒
+PUT {{api}}/products/{{createProduct.response.body.data._id}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "price": 850000,
+  "featured": true
+}
+
+### Activar / desactivar 🔒
+PATCH {{api}}/products/{{createProduct.response.body.data._id}}/toggle-active
+Authorization: Bearer {{token}}
+
+### Borrar la categoría con productos -> 409
+DELETE {{api}}/categories/{{createCategory.response.body.data._id}}
+Authorization: Bearer {{token}}
+
+### Eliminar publicación 🔒
+DELETE {{api}}/products/{{createProduct.response.body.data._id}}
+Authorization: Bearer {{token}}
+
+### Ahora sí: eliminar la categoría 🔒
+DELETE {{api}}/categories/{{createCategory.response.body.data._id}}
+Authorization: Bearer {{token}}
+
+# =====================================================================
+# INFORMACIÓN DEL COMERCIO
+# =====================================================================
+
+### Ver información (público)
+GET {{api}}/business-info
+
+### Crear / actualizar 🔒
+PUT {{api}}/business-info
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "businessName": "TecnoStore",
+  "description": "Tu tienda de tecnología de confianza.",
+  "address": "Av. Siempre Viva 1234, CABA",
+  "phone": "011-4000-0000",
+  "email": "contacto@tecnostore.com",
+  "socialMedia": {
+    "instagram": "https://instagram.com/tecnostore",
+    "facebook": "https://facebook.com/tecnostore",
+    "whatsapp": "5491140000000"
+  },
+  "businessHours": ["Lun a Vie 9 a 18hs", "Sáb 9 a 13hs"]
+}
+
+# =====================================================================
+# CONSULTAS
+# =====================================================================
+
+### Enviar consulta (público): se guarda y se mandan 2 mails
+# @name createInquiry
+POST {{api}}/inquiries
+Content-Type: application/json
+
+{
+  "name": "Juan Pérez",
+  "email": "juan.perez@example.com",
+  "phone": "11 5555-0000",
+  "subject": "Consulta por la RTX 4060",
+  "message": "Hola, ¿tienen stock de la placa de video RTX 4060? ¿Hacen envíos?"
+}
+
+### Listar consultas 🔒 (filtros opcionales)
+GET {{api}}/inquiries?status=pendiente&search=juan&page=1&limit=20
+Authorization: Bearer {{token}}
+
+### Detalle de una consulta 🔒
+GET {{api}}/inquiries/{{createInquiry.response.body.data._id}}
+Authorization: Bearer {{token}}
+
+### Cambiar estado 🔒
+PATCH {{api}}/inquiries/{{createInquiry.response.body.data._id}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "leida"
+}
+
+### Eliminar consulta 🔒
+DELETE {{api}}/inquiries/{{createInquiry.response.body.data._id}}
+Authorization: Bearer {{token}}
+
+# =====================================================================
+# MÉTRICAS
+# =====================================================================
+
+### Resumen para el dashboard 🔒
+GET {{api}}/stats
+Authorization: Bearer {{token}}

@@ -1,0 +1,30 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-5);
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+}
+
+.title {
+  font-size: var(--fs-20);
+}
+
+.message {
+  max-width: 520px;
+  color: var(--ink-2);
+}
+
+.action {
+  margin-top: var(--space-2);
+}

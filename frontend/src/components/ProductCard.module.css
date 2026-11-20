@@ -1,0 +1,93 @@
+/* La ficha no tiene borde propio: lo pone la grilla (.productGrid en
+   ProductGrid.module.css) para que las fichas compartan divisores. */
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  color: var(--ink);
+  transition: background-color var(--transition);
+}
+
+.card:hover {
+  text-decoration: none;
+  background: var(--surface-hover);
+}
+
+.card:hover .name {
+  color: var(--accent);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+}
+
+.featured,
+.category {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.featured {
+  color: var(--accent);
+}
+
+.category {
+  color: var(--ink-2);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-top: var(--hairline);
+}
+
+.name {
+  font-size: var(--fs-14);
+  font-weight: 500;
+  line-height: 1.3;
+  transition: color var(--transition);
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  margin-top: auto;
+  padding-top: var(--space-3);
+}
+
+.price {
+  font-family: var(--font-mono);
+  font-size: var(--fs-16);
+  font-weight: 500;
+}
+
+/* Versión compacta en mobile (2 columnas); desde 640px, la ficha completa */
+@media (min-width: 640px) {
+  .name {
+    font-size: var(--fs-16);
+  }
+
+  .bottom {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .price {
+    font-size: var(--fs-20);
+  }
+}

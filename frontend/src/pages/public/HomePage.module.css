@@ -1,0 +1,175 @@
+/* ---------- Presentación ---------- */
+/* Ocupa todo el ancho, desde el navbar hasta los destacados. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-7) 0;
+  background: var(--paper); /* mismo fondo que el resto de la página */
+}
+
+/* Fondo: pistas de circuito (ver HeroLines.jsx) */
+.heroLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.trace {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.node {
+  fill: var(--paper);
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+/* Tramo azul corto que recorre la pista de punta a punta, muy despacio */
+.signal {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 60 1000;
+  stroke-dashoffset: 1060;
+  opacity: 0.45;
+  animation: signal 12s linear infinite;
+}
+
+@keyframes signal {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Si el usuario pidió menos movimiento en su sistema, no se anima */
+@media (prefers-reduced-motion: reduce) {
+  .signal {
+    display: none;
+  }
+}
+
+.heroText {
+  position: relative; /* queda por encima del fondo */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.heroTitle {
+  font-size: var(--fs-40);
+  letter-spacing: -0.02em;
+}
+
+.heroDescription {
+  max-width: 560px;
+  font-size: var(--fs-20);
+  color: var(--ink-2);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* ---------- Secciones ---------- */
+.content {
+  padding-bottom: var(--space-8);
+}
+
+.section {
+  padding-top: var(--space-7);
+}
+
+/* ---------- Categorías: grilla con bordes compartidos ---------- */
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: var(--hairline);
+  border-left: var(--hairline);
+}
+
+.categoryCell {
+  border-right: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-4);
+  background: var(--surface);
+  color: var(--ink);
+  transition: background-color var(--transition);
+}
+
+.category:hover {
+  text-decoration: none;
+  background: var(--surface-hover);
+}
+
+.category:hover .categoryName {
+  color: var(--accent);
+}
+
+.categoryName {
+  font-size: var(--fs-16);
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+.categoryCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.categoryAll {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.categoryAll:hover {
+  background: var(--ink-hover);
+}
+
+.categoryAll .categoryCount {
+  color: var(--ink-muted);
+}
+
+.categoryAll:hover .categoryName {
+  color: var(--surface);
+}
+
+@media (min-width: 960px) {
+  .hero {
+    padding: var(--space-8) 0;
+  }
+
+  .categoryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .category {
+    min-height: 160px;
+  }
+
+  .categoryName {
+    font-size: var(--fs-20);
+  }
+}

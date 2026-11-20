@@ -1,0 +1,32 @@
+/* Truco de bordes compartidos: la grilla dibuja arriba e izquierda y cada
+   celda dibuja derecha y abajo, así nunca hay bordes dobles.
+   2 columnas ya en mobile, 3 desde 960px y 4 desde 1200px (en el catálogo,
+   con la columna de filtros, se queda en 3). */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: var(--hairline);
+  border-left: var(--hairline);
+}
+
+.cell {
+  min-width: 0;
+  border-right: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .max3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

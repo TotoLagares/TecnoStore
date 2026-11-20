@@ -1,0 +1,275 @@
+/* Estilos compartidos por las pantallas del panel. */
+
+/* Barra superior de cada pantalla: filtros a la izquierda, acción a la derecha */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  flex: 1 1 100%; /* los filtros ocupan su propia fila; el botón va debajo */
+  min-width: 0;
+}
+
+.filters > * {
+  min-width: 0;
+}
+
+.count {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-14);
+}
+
+/* ---------- Tabla (en mobile se convierte en tarjetas) ---------- */
+.tableWrap {
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-14);
+}
+
+.table thead {
+  /* En mobile no hay encabezados: cada celda muestra su etiqueta (data-label) */
+  display: none;
+}
+
+.table tr {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+}
+
+.table tbody tr + tr {
+  border-top: var(--hairline);
+}
+
+.table td {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-1) 0;
+  text-align: right;
+}
+
+.table td::before {
+  content: attr(data-label);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-align: left;
+}
+
+/* Celdas que en mobile van sin etiqueta (miniatura, acciones) */
+.table td.plain::before {
+  display: none;
+}
+
+/* .table .thumb es más específico que el ancho 100% de ImageWithFallback */
+.table .thumb {
+  width: 64px;
+  flex: none;
+  border: var(--hairline);
+}
+
+.name {
+  font-weight: 500;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+.note {
+  font-size: var(--fs-12);
+  color: var(--ink-2);
+}
+
+@media (min-width: 640px) {
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .table thead {
+    display: table-header-group;
+  }
+
+  .table tr {
+    display: table-row;
+    padding: 0;
+  }
+
+  .table th,
+  .table td {
+    display: table-cell;
+    padding: var(--space-3);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .table td::before {
+    display: none;
+  }
+
+  .table th {
+    border-bottom: var(--hairline);
+    font-family: var(--font-mono);
+    font-size: var(--fs-12);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .table tbody tr + tr td {
+    border-top: var(--hairline);
+  }
+
+  .table tbody tr:hover {
+    background: var(--surface-hover);
+  }
+
+  /* Códigos, precios y fechas no se cortan en dos líneas */
+  .table td.mono,
+  .table td.plain a {
+    white-space: nowrap;
+  }
+
+  .actions {
+    flex-wrap: nowrap;
+    padding-top: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .filters {
+    flex: 1;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+/* ---------- Bloques de formulario ---------- */
+.card {
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--hairline);
+}
+
+.cardTitle {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: var(--hairline);
+}
+
+/* Checkboxes y radios */
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choices legend {
+  width: 100%;
+  margin-bottom: var(--space-2);
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.choice {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-14);
+  cursor: pointer;
+}
+
+.choice input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+.fieldError {
+  font-size: var(--fs-14);
+  color: var(--danger);
+}
+
+@media (min-width: 640px) {
+  .formRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Formulario dentro de un Modal (el Modal ya pone el padding) */
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}

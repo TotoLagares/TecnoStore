@@ -1,0 +1,64 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  background: rgba(18, 18, 18, 0.45);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100vh - 2 * var(--gutter));
+  overflow-y: auto;
+  background: var(--surface);
+  border: var(--hairline);
+  border-radius: var(--radius-max);
+  box-shadow: 0 12px 32px rgba(18, 18, 18, 0.18);
+}
+
+.dialog:focus-visible {
+  /* El foco pasa al diálogo por código al abrirlo; el borde ya lo marca. */
+  outline: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--hairline);
+}
+
+.title {
+  font-size: var(--fs-20);
+}
+
+.close {
+  display: inline-flex;
+  padding: var(--space-2);
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius);
+}
+
+.close:hover {
+  background: var(--paper);
+}
+
+.body {
+  padding: var(--space-5);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: var(--hairline);
+}
