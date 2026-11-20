@@ -450,6 +450,17 @@ describe('Escritura de productos', () => {
       assert.equal(enBase.category.toString(), otra._id.toString());
     });
 
+    it('acepta las URLs de imágenes del seed (localhost) → 200', async () => {
+      const producto = await h.crearProducto({ category: categoria._id });
+      const images = [
+        'http://localhost:4000/img/productos/amd-ryzen-5-5600.jpg',
+        'https://picsum.photos/400',
+      ];
+      const res = await actualizar(producto._id, { images, price: 1234 });
+      assert.equal(res.status, 200, JSON.stringify(res.body));
+      assert.deepEqual(res.body.data.images, images);
+    });
+
     it('categoría inexistente → 404', async () => {
       const producto = await h.crearProducto({ category: categoria._id });
       assert.equal((await actualizar(producto._id, { category: h.idInexistente() })).status, 404);

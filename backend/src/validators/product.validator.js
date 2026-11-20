@@ -7,6 +7,9 @@ const NAME_MSG = 'El nombre debe tener entre 3 y 120 caracteres';
 const DESCRIPTION_MSG = 'La descripción debe tener entre 10 y 2000 caracteres';
 const IMAGES_MSG = 'Debe incluir entre 1 y 8 imágenes';
 const IMAGE_URL_MSG = 'Cada imagen debe ser una URL http(s) válida';
+// require_tld: false acepta hosts sin dominio (localhost), que es como el seed
+// guarda las fotos que sirve el propio backend: http://localhost:4000/img/...
+const IMAGE_URL_OPTIONS = { protocols: ['http', 'https'], require_protocol: true, require_tld: false };
 const PRICE_MSG = 'El precio debe ser un número mayor o igual a 0';
 
 // Reglas para los query params de los listados (público y admin).
@@ -28,7 +31,7 @@ exports.createRules = [
   body('category').isMongoId().withMessage('La categoría es inválida'),
   body('description', DESCRIPTION_MSG).isString().bail().trim().isLength({ min: 10, max: 2000 }),
   body('images', IMAGES_MSG).isArray({ min: 1, max: 8 }),
-  body('images.*', IMAGE_URL_MSG).isString().bail().trim().isURL({ protocols: ['http', 'https'], require_protocol: true }),
+  body('images.*', IMAGE_URL_MSG).isString().bail().trim().isURL(IMAGE_URL_OPTIONS),
   body('price', PRICE_MSG).isFloat({ min: 0 }),
   body('availability').optional().isIn(AVAILABILITY).withMessage('Disponibilidad inválida'),
   body('featured').optional().isBoolean({ strict: true }).withMessage('featured debe ser booleano'),
@@ -41,7 +44,7 @@ exports.updateRules = [
   body('category').optional().isMongoId().withMessage('La categoría es inválida'),
   body('description', DESCRIPTION_MSG).optional().isString().bail().trim().isLength({ min: 10, max: 2000 }),
   body('images', IMAGES_MSG).optional().isArray({ min: 1, max: 8 }),
-  body('images.*', IMAGE_URL_MSG).optional().isString().bail().trim().isURL({ protocols: ['http', 'https'], require_protocol: true }),
+  body('images.*', IMAGE_URL_MSG).optional().isString().bail().trim().isURL(IMAGE_URL_OPTIONS),
   body('price', PRICE_MSG).optional().isFloat({ min: 0 }),
   body('availability').optional().isIn(AVAILABILITY).withMessage('Disponibilidad inválida'),
   body('featured').optional().isBoolean({ strict: true }).withMessage('featured debe ser booleano'),
